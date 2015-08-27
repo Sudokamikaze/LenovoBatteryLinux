@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -n "If you do not run this script as Root it will not work"
+echo If you do not run this script as Root it will not work
 echo -n "Install the battery charge for 50% or 100%?(1/2)"
 read item
 case "$item" in
