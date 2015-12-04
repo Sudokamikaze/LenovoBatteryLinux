@@ -1,5 +1,11 @@
 #!/bin/bash
-echo If you do not run this script as Root it will not work
+clear
+# Pulshen battery management
+# root checker
+if [ "x$(id -u)" != 'x0' ]; then
+    echo 'Error: this script can only be executed by root'
+    exit 1
+fi
 echo -n "Install the battery charge for 50% or 100%?(1/2)"
 read item
 case "$item" in
