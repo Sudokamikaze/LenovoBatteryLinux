@@ -10,5 +10,5 @@ Firstfully install acpi_call module perform this command :
 
 After installing acpi_call module u may configure battery charge by this command :
 
-`battery_management.sh`
+`./battery_management.sh`
 ### [Acpi_call repository] (https://github.com/mkottman/acpi_call)
