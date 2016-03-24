@@ -8,6 +8,7 @@ fi
 echo ==================================
 echo 1 Install battery charge level to 50% and lock
 echo 2 Install battery charge level to 100%
+echo ==================================
 echo -n "Choose an action: "
 read item
 case "$item" in
@@ -17,6 +18,6 @@ case "$item" in
     2)echo "Installing battery charge 100%"
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
         ;;
-    *) echo "Ничего не ввели. Ожидание ввода"
+    *) echo "Noting Entered"
         ;;
 esac
