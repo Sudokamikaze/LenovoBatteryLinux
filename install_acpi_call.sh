@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ===========================================================
-echo "1. ArchLinux install(Supported all kernels and zenreiser)"
+echo "1. ArchLinux install(Supported all kernels and XKernel)"
 echo "2. Ubuntu install(Supported all kernels)"
 echo ===========================================================
 echo -n "You are using Archlinux or ubuntu(1/2)"
@@ -15,8 +15,8 @@ case "$item" in
       if [ $option == 1 ]; then sudo pacman -S acpi_call
     elif [ $option == 2 ]; then
       mkdir work_dir && cd work_dir
-      git clone https://github.com/Sudokamikaze/ZenReiser4-modules.git
-      cd ZenReiser4-modules/acpi_call && makepkg -sri
+      git clone https://github.com/Sudokamikaze/XKernel-modules.git
+      cd XKernel-modules/acpi_call && makepkg -sri
     else
       echo "Unknown symbol"
     fi
