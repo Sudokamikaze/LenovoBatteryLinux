@@ -7,8 +7,8 @@ echo -n "You are using Archlinux or ubuntu(1/2)"
 read item
 case "$item" in
     1) echo ====================================
-      echo "1. If u using not zenreiser kernel"
-      echo "2. If u using zenreiser kernel"
+      echo "1. Arch default kernel"
+      echo "2. XKernel-arch kernel"
       echo ====================================
       echo -n "Choose an action: "
       read option
