@@ -15,7 +15,7 @@ case "$item" in
     1)echo "Installing battery protection mode"
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
         ;;
-    2)echo "Disabling battery protection mode and installing charge level to 100%"
+    2)echo "Disabling battery protection mode"
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
         ;;
     *) echo "Noting Entered"
