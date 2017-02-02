@@ -8,7 +8,7 @@ if [ "x$(id -u)" != 'x0' ]; then
 fi
 
 function charge_to_60 {
-if (("$chargelevel" => "60")); then
+if (("$chargelevel" >= "60")); then
   echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
   echo "Done, battery charged to $chargelevel"
 fi
@@ -30,7 +30,7 @@ case "$item" in
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
         ;;
     3)
-    if (("$chargelevel" <= "60")); then
+    if (("$chargelevel" >= "60")); then
       echo "ERROR, battery currently charged over 60%"
       exit
     fi
