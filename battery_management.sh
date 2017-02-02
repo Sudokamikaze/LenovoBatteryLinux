@@ -1,6 +1,5 @@
 #!/bin/bash
 
-chargelevel=$(cat /sys/class/power_supply/BAT1/capacity)
 
 if [ "x$(id -u)" != 'x0' ]; then
     echo 'Error: this script can only be executed by root'
@@ -12,6 +11,7 @@ echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
 loop=yes
 while [ "$loop" = "yes" ]
 do
+chargelevel=$(cat /sys/class/power_supply/BAT1/capacity)
 sleep 1m
 if (("$chargelevel" >= "60")); then
   echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
