@@ -8,10 +8,16 @@ if [ "x$(id -u)" != 'x0' ]; then
 fi
 
 function charge_to_60 {
+echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
+loop=yes
+while [ "$loop" = "yes" ]
+do
+sleep 1m
 if (("$chargelevel" >= "60")); then
   echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
   echo "Done, battery charged to $chargelevel"
 fi
+done
 }
 
 echo "Current charge level: $chargelevel"
@@ -29,17 +35,12 @@ case "$item" in
     2)echo "Disabling battery protection mode"
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
         ;;
-    3)
+    3) echo "Starting watchdog"
     if (("$chargelevel" >= "60")); then
       echo "ERROR, battery currently charged over 60%"
-      exit
+      exit 1
     fi
-    echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
-    while [ "$loop" = "yes" ]
-    do
     charge_to_60
-    sleep 1m
-    done
         ;;
     *) echo "Noting Entered"
         ;;
