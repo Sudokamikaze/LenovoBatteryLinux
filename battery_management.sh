@@ -16,6 +16,7 @@ sleep 1m
 if (("$chargelevel" >= "60")); then
   echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
   echo "Done, battery charged to $chargelevel"
+  exit 1
 fi
 done
 }
