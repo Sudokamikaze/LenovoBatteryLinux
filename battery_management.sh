@@ -30,6 +30,10 @@ case "$item" in
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
         ;;
     3)
+    if (("$chargelevel" <= "60")); then
+      echo "ERROR, battery currently charged over 60%"
+      exit
+    fi
     echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
     while [ "$loop" = "yes" ]
     do
