@@ -1,33 +1,42 @@
 #!/bin/bash
-echo ===========================================================
-echo "1. ArchLinux install(Supported all kernels and XKernel)"
-echo "2. Ubuntu install(Supported all kernels)"
-echo ===========================================================
-echo -n "You are using Archlinux or ubuntu(1/2)"
+
+function check_kernel {
+kernel=$(uname -r)
+case "$kernel" in
+  *-xkernel) cd /tmp
+  git clone https://github.com/Sudokamikaze/XKernel-modules.git
+  cd XKernel-modules/acpi_call && makepkg -sri
+  ;;
+  *-ARCH) sudo pacman -S acpi_call
+  ;;
+esac
+
+}
+
+function distro {
+  eval $(grep ID= /etc/os-release)
+  case "$ID" in
+    arch) check_kernel
+    ;;
+    ubuntu|debian)
+    sudo apt-get install dkms git build-essential linux-headers-$(uname -r)
+    cd /tmp
+    git clone http://github.com/mkottman/acpi_call.git
+    sudo mkdir /usr/src/acpi_call-0.0.1
+    sudo cp -rp acpi_call/* /usr/src/acpi_call-0.0.1
+    sudo dkms add -m acpi_call -v 0.0.1
+    sudo dkms build -m acpi_call -v 0.0.1
+    sudo dkms install -m acpi_call -v 0.0.1
+    sudo modprobe acpi_call
+    ;;
+  esac
+}
+
+echo -n "Do u want to install? [Y/N]: "
 read item
 case "$item" in
-    1) echo ====================================
-      echo "1. Arch default kernel"
-      echo "2. XKernel-arch kernel"
-      echo ====================================
-      echo -n "Choose an action: "
-      read option
-      if [ $option == 1 ]; then sudo pacman -S acpi_call
-    elif [ $option == 2 ]; then
-      mkdir work_dir && cd work_dir
-      git clone https://github.com/Sudokamikaze/XKernel-modules.git
-      cd XKernel-modules/acpi_call && makepkg -sri
-    else
-      echo "Unknown symbol"
-    fi
-        ;;
-    2)echo "Installing for Ubuntu"
-      sudo apt-get install dkms git build-essential linux-headers-$(uname -r)
-      git clone http://github.com/mkottman/acpi_call.git
-      sudo mkdir /usr/src/acpi_call-0.0.1
-      sudo cp -rp acpi_call/* /usr/src/acpi_call-0.0.1 && sudo dkms add -m acpi_call -v 0.0.1 && sudo dkms build -m acpi_call -v 0.0.1 && sudo dkms install -m acpi_call -v 0.0.1 && sudo modprobe acpi_call
-        ;;
-    *) echo "Nothing entered."
-        ;;
+  y|Y) distro
+  ;;
+  n|N) exit 1
+  ;;
 esac
-echo Complete!
