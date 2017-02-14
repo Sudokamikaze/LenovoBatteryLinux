@@ -2,6 +2,9 @@
 
 temp_chargelevel=$(cat /sys/class/power_supply/BAT1/capacity)
 
+alias charge60="echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call"
+alias chargefull="echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call"
+
 if [ "x$(id -u)" != 'x0' ]; then
     echo 'Error: this script can only be executed by root'
     exit 1
@@ -31,11 +34,11 @@ echo ==================================
 echo -n "Choose an action: "
 read item
 case "$item" in
-    1)echo "Installing battery protection mode"
-      echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
+    1)echo "Charge level set to 60"
+      charge60
         ;;
-    2)echo "Disabling battery protection mode"
-      echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
+    2)echo "Charge level set to 100"
+      chargefull
         ;;
     3) echo "Starting watchdog"
 if (("$temp_chargelevel" >= "60")); then
