@@ -5,7 +5,9 @@ kernel=$(uname -r)
 case "$kernel" in
   *-xkernel) cd /tmp
   git clone https://github.com/Sudokamikaze/XKernel-modules.git
-  cd XKernel-modules/acpi_call && makepkg -sri
+  cd XKernel-modules/
+  export lenovo_enabled=true
+  ./modules.sh
   ;;
   *-ARCH) sudo pacman -S acpi_call
   ;;
