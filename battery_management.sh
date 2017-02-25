@@ -31,10 +31,10 @@ echo ==================================
 echo -n "Choose an action: "
 read item
 case "$item" in
-    1)echo "Installing battery protection mode"
+    1)echo "Charge level set to 60"
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
         ;;
-    2)echo "Disabling battery protection mode"
+    2)echo "Charge level set to 100"
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
         ;;
     3) echo "Starting watchdog"
