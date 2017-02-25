@@ -11,14 +11,14 @@ if [ "x$(id -u)" != 'x0' ]; then
 fi
 
 function charge_to_60 {
-chargefull
+echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
 loop=yes
 while [ "$loop" = "yes" ]
 do
 chargelevel=$(cat /sys/class/power_supply/BAT1/capacity)
 sleep 1m
 if (("$chargelevel" >= "60")); then
-  charge60
+  echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
   echo "Done, battery charged to $chargelevel"
   exit 1
 fi
