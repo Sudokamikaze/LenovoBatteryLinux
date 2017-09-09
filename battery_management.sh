@@ -1,7 +1,5 @@
 #!/bin/bash
 
-temp_chargelevel=$(cat /sys/class/power_supply/BAT1/capacity)
-
 if [ "x$(id -u)" != 'x0' ]; then
     echo 'Error: this script can only be executed by root'
     exit 1
@@ -12,17 +10,16 @@ echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
 loop=yes
 while [ "$loop" = "yes" ]
 do
-chargelevel=$(cat /sys/class/power_supply/BAT1/capacity)
 sleep 1m
-if (("$chargelevel" >= "60")); then
+if (("$(cat /sys/class/power_supply/BAT1/capacity)" >= "60")); then
   echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 4' > /proc/acpi/call
-  echo "Done, battery charged to $chargelevel"
+  echo "Done, battery charged to $(cat /sys/class/power_supply/BAT1/capacity)%"
   exit 1
 fi
 done
 }
 
-echo "Current charge level: $temp_chargelevel"
+echo "Current charge level: $(cat /sys/class/power_supply/BAT1/capacity)%"
 echo ==================================
 echo "1 Install battery protection mode(Charge level about 55~59%)"
 echo "2 Disable battery protection mode(Charge level 100%)"
@@ -37,12 +34,14 @@ case "$item" in
     2)echo "Charge level set to 100"
       echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' > /proc/acpi/call
         ;;
-    3) echo "Starting watchdog"
-if (("$temp_chargelevel" >= "60")); then
-  echo "ERROR, battery currently charged over 60%"
+    3) 
+if (("$(cat /sys/class/power_supply/BAT1/capacity)" >= "60")); then
+  echo "Battery level higher then 60%"
   exit 1
-fi
+else
+    echo "Charging battery. Please wait"
     charge_to_60
+fi
         ;;
     *) echo "Noting Entered"
         ;;

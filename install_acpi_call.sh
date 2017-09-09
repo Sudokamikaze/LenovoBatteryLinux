@@ -1,11 +1,9 @@
 #!/bin/bash
 
 function check_kernel {
-kernel=$(uname -r)
-case "$kernel" in
+case "$(uname -r)" in
   *-xkernel) cd /tmp
-  git clone https://github.com/Sudokamikaze/XKernel-modules.git
-  cd XKernel-modules/
+  git clone https://github.com/Sudokamikaze/XKernel-modules.git && cd XKernel-modules/
   export lenovo_enabled=true
   ./modules.sh
   ;;
@@ -16,14 +14,14 @@ esac
 }
 
 function distro {
-  eval $(grep ID= /etc/os-release)
-  case "$ID" in
-    arch) check_kernel
+  case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
+    Arch ) check_kernel
     ;;
-    ubuntu|debian)
+    Ubuntu | Debian)
     sudo apt-get install dkms git build-essential linux-headers-$(uname -r)
     cd /tmp
     git clone http://github.com/mkottman/acpi_call.git
+    cd acpi_call && sed -i 's|acpi/acpi.h|linux/acpi.h|' acpi_call.c && cd ../
     sudo mkdir /usr/src/acpi_call-0.0.1
     sudo cp -rp acpi_call/* /usr/src/acpi_call-0.0.1
     sudo dkms add -m acpi_call -v 0.0.1
