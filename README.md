@@ -2,13 +2,14 @@
 Battery Management for Ideapads(tested on Lenovo G580)
 
 ## Usage
-If you building acpi_call on ubuntu with kernel 3.17 and higher run this command on acpi_call sources
+If you using older ubuntu, please remove this line from installer
+```
+ cd acpi_call && sed -i 's|acpi/acpi.h|linux/acpi.h|' acpi_call.c && cd ../
+```
 
-` sed -i 's|acpi/acpi.h|linux/acpi.h|' acpi_call.c`
-
-And then execute this command
+And then, execute this command
 `./install_acpi_call.sh`
 
-After installing acpi_call module u may configure battery charge by this command :
+After installing acpi_call module you can configure battery charge by executing main script
 
 `./battery_management.sh`
